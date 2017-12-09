@@ -20,5 +20,7 @@
         "url": "https://github.com/Ayush-Rawal/JSCalc/issues"
     },
     "homepage": "https://github.com/Ayush-Rawal/JSCalc#readme",
-    "dependencies": {}
+    "dependencies": {
+        "prompt": "^1.0.0"
+    }
 }

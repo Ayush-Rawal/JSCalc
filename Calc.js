@@ -1,9 +1,11 @@
 const pi = 3.1415926535897932385;
 const e = 2.7182818284590452354;
 
-num_val = null;
-input = "";
-res = null;
+var num_val = null;
+var input = "";
+var res = null;
+var prompt = require('prompt');
+
 
 var sum = (a, b) => a + b;
 
@@ -58,7 +60,7 @@ var parser = function(inp) {
 
 
 var get_input = function() {
-    //code to get input
+    getin(); //code to get input
 
     input = input.split(" ");
 
@@ -91,3 +93,11 @@ var validate_input = function(inp) {
 
 get_input();
 console.log("Result is: " + res);
+
+function getin() {
+    prompt.get('in', function(err, result) {
+        if (!err) {
+            input = result.in;
+        }
+    })
+}
