@@ -1,10 +1,10 @@
 const pi = 3.1415926535897932385;
 const e = 2.7182818284590452354;
 
-var num_val = null;
-var input = "";
-var res = null;
-var prompt = require('prompt');
+global.num_val = null;
+global.input = "3 + 2";
+global.res = null;
+global.prompt = require('prompt');
 
 
 var sum = (a, b) => a + b;
@@ -22,6 +22,7 @@ var operation = function(fx, a, b) {
 }
 
 var gen_token = function(elem) {
+    var curr_tok;
     if (elem === '*')
         curr_tok = prod;
     else if (elem === '+')
@@ -36,42 +37,34 @@ var gen_token = function(elem) {
         num_val = pi;
     else if (elem === 'e')
         num_val = e;
+    else num_val = parseFloat(elem);
 
     if (num_val === null && (elem === '*' || elem === '/' || elem === '^'))
         res = 1;
+    return curr_tok;
 }
 
-var prim = function(inp) {
+var prim = function(curr_tok) {
     if (curr_tok === sum || curr_tok === prod || curr_tok === diff || curr_tok === div || curr_tok === power) {
         res = operation(curr_tok, res, num_val);
-        curr_tok_tok = null;
-    } else {
-        num_val = parseFloat(inp);
     }
 }
 
 var parser = function(inp) {
     inp.forEach(element => {
         curr_tok = gen_token(element);
-        prim();
+        prim(curr_tok);
+        curr_tok = null;
     });
-    return res;
 }
 
 
-var get_input = function() {
-    getin(); //code to get input
+// var get_input = function() {
+//     getin(); //code to get input
+//     setTimeout(proc_input, 100000);
+// }
 
-    input = input.split(" ");
-
-    if (validate_input(input)) {
-        parser(input);
-    } else {
-        console.error("Invalid input entered");
-    }
-}
-
-var validate_input = function(inp) {
+function validate_input(inp) {
     // input should only contain numbers, operators, e and pi
     var flag = false;
     inp.forEach(element => {
@@ -91,13 +84,25 @@ var validate_input = function(inp) {
     return flag;
 }
 
-get_input();
-console.log("Result is: " + res);
+getin(); //code to get input
+setTimeout(proc_input, 4000);
+setTimeout(() => { console.log("Result is: " + res); }, 9000);
 
 function getin() {
     prompt.get('in', function(err, result) {
         if (!err) {
             input = result.in;
+            console.log(input);
         }
     })
+}
+
+function proc_input() {
+    input = input.split(" ");
+
+    //if (validate_input(input)) {
+    parser(input);
+    // } else {
+    //     console.error("Invalid input entered");
+    // }
 }
