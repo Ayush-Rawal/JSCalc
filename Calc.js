@@ -5,25 +5,15 @@ num_val = null;
 input = "";
 res = null;
 
-var sum = function(a, b) {
-    return a + b;
-}
+var sum = (a, b) => a + b;
 
-var diff = function(a, b) {
-    return a - b;
-}
+var diff = (a, b) => a - b;
 
-var prod = function(a, b) {
-    return a * b;
-}
+var prod = (a, b) => a * b;
 
-var div = function(a, b) {
-    return a / b;
-}
+var div = (a, b) => a / b;
 
-var power = function(a, b) {
-    return Math.pow(a, b);
-}
+var power = (a, b) => a ** b;
 
 var operation = function(fx, a, b) {
     return fx(a, b);
@@ -40,14 +30,19 @@ var gen_token = function(elem) {
         curr_tok = div;
     else if (elem === '^')
         curr_tok = power;
+    else if (elem === 'pi')
+        num_val = pi;
+    else if (elem === 'e')
+        num_val = e;
 
-    if ((elem === '*' && num_val === null) || (elem === '/' && num_val === null) || (elem === '^' && num_val === null))
+    if (num_val === null && (elem === '*' || elem === '/' || elem === '^'))
         res = 1;
 }
 
 var prim = function(inp) {
     if (curr_tok === sum || curr_tok === prod || curr_tok === diff || curr_tok === div || curr_tok === power) {
         res = operation(curr_tok, res, num_val);
+        curr_tok_tok = null;
     } else {
         num_val = parseFloat(inp);
     }
@@ -58,7 +53,7 @@ var parser = function(inp) {
         curr_tok = gen_token(element);
         prim();
     });
-    console.log(res);
+    return res;
 }
 
 
@@ -67,8 +62,7 @@ var get_input = function() {
 
     input = input.split(" ");
 
-    var valid = validate_input(input);
-    if (valid) {
+    if (validate_input(input)) {
         parser(input);
     } else {
         console.error("Invalid input entered");
@@ -78,11 +72,22 @@ var get_input = function() {
 var validate_input = function(inp) {
     // input should only contain numbers, operators, e and pi
     var flag = false;
-    if (!flag) {
-        return true;
-    } else {
-        return false;
-    }
+    inp.forEach(element => {
+        if (function(element) {
+                element.split("").forEach(elem => {
+                    if (!(elem == 1 || elem == 2 || elem == 3 || elem == 4 || elem == 5 || elem == 6 || elem == 7 || elem == 8 || elem == 9 || elem == 0)) {
+                        return false;
+                    }
+                });
+                return true;
+            } || element === "e" || element === "pi" || elem === '*' || elem === '+' || elem === '-' || elem === '/' || elem === '^') {
+            flag = true;
+        } else {
+            flag = false;
+        }
+    });
+    return flag;
 }
 
 get_input();
+console.log("Result is: " + res);
